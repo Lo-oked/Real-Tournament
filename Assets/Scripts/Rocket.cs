@@ -5,6 +5,7 @@ using UnityEngine;
 public class Rocket : MonoBehaviour
 {
 	public float speed = 20;
+	public GameObject explosionparticle;
 
 	void Start()
 	{
@@ -19,5 +20,13 @@ public class Rocket : MonoBehaviour
 	void OnCollisionEnter(Collision other)
 	{
 		Destroy(gameObject);
+		var health = other.gameObject.GetComponent<health>();
+        if (health != null)
+        {
+			health.Damage(10);
+        }
+
+		Instantiate(explosionparticle, transform.position,transform.rotation);
 	}
+	
 }
