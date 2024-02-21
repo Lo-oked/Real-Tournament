@@ -2,21 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Health : MonoBehaviour
+public class health : MonoBehaviour
 {
-    public int health;
-    public int maxHealth = 100;
+    public int Health;
+    public int maxHealth;
+
 
     void Start()
     {
-        if(health == 0) health = maxHealth;
+        if (Health >= 0) Health = maxHealth;
     }
-
-
     public void Damage(int damage)
     {
-        health -= damage;
-        if(health <= 0)
+        Health -= damage;
+        if (Health <= 0)
         {
             Die();
         }
