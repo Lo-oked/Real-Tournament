@@ -19,6 +19,8 @@ public class Health : MonoBehaviour
         {
             Die();
         }
+        if (health < 0)health = 0;
+        
     }
 
     public void Die()

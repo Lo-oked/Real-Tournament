@@ -6,6 +6,7 @@ public class Weapon : MonoBehaviour
 {
 	public UnityEvent onRightClick;
 
+
 	public GameObject bulletPrefab;
 	public int ammo;
 	public int maxAmmo = 10;
