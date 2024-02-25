@@ -5,7 +5,8 @@ using UnityEngine.Events;
 public class Weapon : MonoBehaviour
 {
 	public UnityEvent onRightClick;
-
+	public UnityEvent onShoot;
+	public UnityEvent<bool> onReload;
 
 	public GameObject bulletPrefab;
 	public int ammo;
@@ -30,12 +31,12 @@ public class Weapon : MonoBehaviour
 		}
 
 		// auto mode
-		if(isAutoFire && Input.GetKey(KeyCode.Mouse0))
+		if (isAutoFire && Input.GetKey(KeyCode.Mouse0))
 		{
 			Shoot();
 		}
 
-		if( Input.GetKeyDown(KeyCode.R) && ammo < maxAmmo)
+		if (Input.GetKeyDown(KeyCode.R) && ammo < maxAmmo)
 		{
 			Reload();
 		}
@@ -45,23 +46,23 @@ public class Weapon : MonoBehaviour
 
 	public void Shoot()
 	{
-		if(isReloading) return;
+		if (isReloading) return;
 		if (ammo <= 0)
 		{
 			Reload();
 			return;
 		}
-		if(fireCooldown > 0) return;
-
+		if (fireCooldown > 0) return;
 
 		ammo--;
 		fireCooldown = fireInterval;
+		onShoot.Invoke();
 
 		for (int i = 0; i < bulletsPerShot; i++)
 		{
-			var bullet = Instantiate(bulletPrefab,transform.position,transform.rotation);
-			var offsetX = Random.Range(-recoilAngle,recoilAngle);
-			var offsetY = Random.Range(-recoilAngle,recoilAngle);
+			var bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+			var offsetX = Random.Range(-recoilAngle, recoilAngle);
+			var offsetY = Random.Range(-recoilAngle, recoilAngle);
 			bullet.transform.eulerAngles += new Vector3(offsetX, offsetY, 0);
 		}
 	}
@@ -71,11 +72,12 @@ public class Weapon : MonoBehaviour
 	{
 		if (isReloading) return;
 		isReloading = true;
-
-		await new WaitForSeconds(2f);
+		onReload.Invoke(false);
+		await new WaitForSeconds(1f);
 
 		ammo = maxAmmo;
 		isReloading = false;
-		print ("Reloaded");
+		onReload.Invoke(true);
+		print("Reloaded");
 	}
 }

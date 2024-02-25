@@ -1,30 +1,39 @@
-
+using UnityEngine.Events;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
     public int health;
     public int maxHealth = 100;
+    public bool shouldDestroy = true;
 
+    public GameObject damageEffect;
+    public GameObject deathEffect;
+
+    public UnityEvent onDie;
+    public UnityEvent onDamage;
     void Start()
     {
-        if(health == 0) health = maxHealth;
+        if (health == 0) health = maxHealth;
     }
 
 
     public void Damage(int damage)
     {
         health -= damage;
-        if(health <= 0)
+        onDamage.Invoke();
+        if (health <= 0)
         {
             Die();
         }
-        if (health < 0)health = 0;
-        
+        if (health < 0) health = 0;
+        if (damageEffect != null) Instantiate(damageEffect, transform.position, Quaternion.identity);
     }
 
     public void Die()
     {
-        Destroy(gameObject);
+        if (shouldDestroy) Destroy(gameObject);
+        onDie.Invoke();
+        if (deathEffect != null) Instantiate(deathEffect, transform.position, Quaternion.identity);
     }
 }

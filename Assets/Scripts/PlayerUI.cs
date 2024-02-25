@@ -7,13 +7,17 @@ public class PlayerUI : MonoBehaviour
     public Health health;
     public TMP_Text ammoText;
     public Weapon weapon;
+
     void Start()
     {
-        UpdateUi();
-        
+        UpdateUI();
+        health.onDamage.AddListener(UpdateUI);
+        weapon.onShoot.AddListener(UpdateUI);
+        weapon.onReload.AddListener((ended) => UpdateUI());
     }
 
-    void UpdateUi()
+
+    void UpdateUI()
     {
         healthText.text = health.health.ToString();
         ammoText.text = weapon.ammo.ToString();
