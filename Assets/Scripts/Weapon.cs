@@ -17,7 +17,9 @@ public class Weapon : MonoBehaviour
 	public float fireCooldown;
 	public float recoilAngle;
 	public int bulletsPerShot = 1;
-	void Update()
+    public AudioClip shootSound;
+	public AudioClip reloadingSound;
+    void Update()
 	{
 
 		fireCooldown -= Time.deltaTime;
@@ -25,21 +27,22 @@ public class Weapon : MonoBehaviour
 
 	public void Shoot()
 	{
-		if(isReloading) return;
+        if (isReloading) return;
 		if (ammo <= 0)
 		{
 			Reload();
 			return;
 		}
-		if(fireCooldown > 0) return;
-
-		ammo--;
+        if (fireCooldown > 0) return;
+        AudioSystem.Play(shootSound);
+        ammo--;
 		fireCooldown = fireInterval;
-		onShoot.Invoke();
+        onShoot.Invoke();
+        
 
-		for (int i = 0; i < bulletsPerShot; i++)
+        for (int i = 0; i < bulletsPerShot; i++)
 		{
-			var bullet = Instantiate(bulletPrefab,transform.position,transform.rotation);
+            var bullet = Instantiate(bulletPrefab,transform.position,transform.rotation);
 			var offsetX = Random.Range(-recoilAngle,recoilAngle);
 			var offsetY = Random.Range(-recoilAngle,recoilAngle);
 			bullet.transform.eulerAngles += new Vector3(offsetX, offsetY, 0);
@@ -52,9 +55,11 @@ public class Weapon : MonoBehaviour
 		if (isReloading) return;
 		isReloading = true;
 		onReload.Invoke(false);
-		await new WaitForSeconds(1f);
+        AudioSystem.Play(reloadingSound);
+        await new WaitForSeconds(1f);
 
-		ammo = maxAmmo;
+        
+        ammo = maxAmmo;
 		isReloading = false;
 		onReload.Invoke(true);
 		print ("Reloaded");

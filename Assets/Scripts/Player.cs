@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
 	public GameObject equipText;
 	public Transform hand;
 
-	void Start()
+    void Start()
 	{
 		health = GetComponent<Health>();
 	}
@@ -39,6 +39,7 @@ public class Player : MonoBehaviour
 		// manual mode
 		if (!weapon.isAutoFire && Input.GetKeyDown(KeyCode.Mouse0))
 		{
+
 			weapon.Shoot();
 		}
 
@@ -51,7 +52,7 @@ public class Player : MonoBehaviour
 		if(weapon.isAutoFire && Input.GetKey(KeyCode.Mouse0))
 		{
 			weapon.Shoot();
-		}
+        }
 
 		if( Input.GetKeyDown(KeyCode.R) && weapon.ammo < weapon.maxAmmo)
 		{
