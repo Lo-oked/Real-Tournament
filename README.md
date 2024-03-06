@@ -2,8 +2,11 @@ My first person shoting game
 
 Controls:
 WASD - walking
+
 Shift - running
+
 Space - jumping
+
 Leftclick - shoot
 
 Video:
